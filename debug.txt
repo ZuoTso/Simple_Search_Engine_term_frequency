@@ -1,0 +1,9 @@
+4c4  Centric Partial
+< 586737
+---
+> 68537
+
+
+
+586737, "A comparative analysis of partial order planning and task reduction planning"
+68537, "A new method based on extension theory for partial discharge pattern recognition"
