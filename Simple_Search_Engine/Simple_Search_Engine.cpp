@@ -245,8 +245,12 @@ std::vector<std::pair<int, double>> findTopKRanks(const std::string& line, const
 
 	std::partial_sort(topKRanks.begin(), topKRanks.begin() + k, topKRanks.end(),
 		[](const std::pair<int, double>& a, const std::pair<int, double>& b) {
-			return a.second > b.second;
+			if (a.second != b.second) {
+				return a.second > b.second;
+			}
+			return a.first < b.first;
 		});
+
 
 	topKRanks.resize(k);
 
@@ -267,7 +271,7 @@ int main(int argc, char* argv[]) {
 	//int top_k = argv[3][0] - '0';
 	// open file
 	//std::ifstream corpusFile(argv[1]); 
-	std::ifstream corpusFile("C:\\Users\\chius\\OneDrive\\桌面\\Simple_Search_Engine_3\\corpus.txt");
+	std::ifstream corpusFile("C:\\Users\\chius\\OneDrive\\桌面\\Simple_Search_Engine_3\\corpus1.txt");
 	if (!corpusFile) {
 		std::cout << "Failed to open corpus file.\n";
 		return 1;
@@ -314,7 +318,7 @@ int main(int argc, char* argv[]) {
 
 	// execute query
 	//std::ifstream queriesFile(argv[2]);
-	std::ifstream queriesFile("C:\\Users\\chius\\OneDrive\\桌面\\Simple_Search_Engine_3\\query.txt");
+	std::ifstream queriesFile("C:\\Users\\chius\\OneDrive\\桌面\\Simple_Search_Engine_3\\query_1.txt");
 	if (!queriesFile) {
 		std::cout << "Failed to open query file.\n";
 		return 1;
@@ -332,13 +336,33 @@ int main(int argc, char* argv[]) {
 		// find top rank of new tf*IDFs
 		std::vector<std::pair<int, double>> topKRanks = findTopKRanks(line, idfMap, termFrequencyMap, top_k);
 
+		int isFisrt = 0;
 		for (const auto& rank : topKRanks) {
+			if (rank.second > 0)
+				if (!isFisrt) {
+					std::cout << rank.first;
+					isFisrt++;
+				}
+				else
+					std::cout << " " << rank.first;
+			else
+				if (!isFisrt) {
+					std::cout << "-1";
+					isFisrt++;
+				}
+				else
+					std::cout << " " << -1;
+		}
+		isFisrt = 0;
+		std::cout << std::endl;
+
+		/*for (const auto& rank : topKRanks) {
 			if (rank.second > 0)
 				std::cout << "Document ID: " << rank.first << ", Rank: " << rank.second << std::endl;
 			else
 				std::cout << "Document ID: " << -1 << ", Rank: " << rank.second << std::endl;
 		}
-		std::cout << std::endl;
+		std::cout << std::endl;*/
 
 		// find top sum IDFs
 		/*
